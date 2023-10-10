@@ -2,6 +2,7 @@ import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {Button} from '@rneui/base';
 import {useNavigation} from '@react-navigation/native';
+import { TAB_BACKG_COLOR } from '../../utils/Colors';
 
 
 const CustomHeader = () => {
@@ -27,7 +28,7 @@ const CustomHeader = () => {
           onPress={()=>navigation.navigate('Login')}
         />
         <Button
-          title="SignUp"
+          title="Signup"
           buttonStyle={{backgroundColor: 'rgba(39, 39, 39, 1)', borderRadius: 5,}}
           containerStyle={{
             width: 'auto',
@@ -47,7 +48,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 5,
     justifyContent: 'space-between',
-    alignItems:'center'
+    alignItems:'center',
+    backgroundColor: TAB_BACKG_COLOR,
   },
   logo: {
     width: 50,

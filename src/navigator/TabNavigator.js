@@ -6,12 +6,12 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Cart from '../screens/Cart';
 import Profile from '../screens/Profile';
 import { ACTIVE_TAB_COLOR, INACTIVE_TAB_COLOR, TAB_BACKG_COLOR } from '../../utils/Colors';
 import Search from '../screens/Search';
 import Favourites from '../screens/Favourites';
 import CustomHeader from '../components/CustomHeader';
+import Cart from '../screens/Cart';
 
 const Tab = createBottomTabNavigator();
 

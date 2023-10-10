@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -15,13 +15,16 @@ import {
 } from 'react-native';
 import { textStyle } from './utils/GlobalStyles';
 import AppNavigator from './src/navigator/AppNavigator';
-
+import SplashScreen from 'react-native-splash-screen'
 
 
 
 function App() {
 
-
+  useEffect(()=>{
+    SplashScreen.hide();
+  },[]);
+  
   return (
     <AppNavigator/>
   );
