@@ -75,7 +75,7 @@ const TabNavigator = () => {
         name="Profile"
         component={Profile}
         options={{
-          headerShown: true,
+          headerShown: false,
           tabBarLabel: 'Profile',
           tabBarIcon: ({color, size, focused}) =>
             <FontAwesome name='user' size={size} color={color}/>

@@ -104,7 +104,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
     backgroundColor:'white',
-    borderRadius:5,
+    borderRadius:10,
+    width:'98%',
+    alignSelf:'center',
   },
   bannerTextContainer: {
     flex: 1,
