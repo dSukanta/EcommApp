@@ -62,11 +62,11 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Favourites"
+        name="Wishlist"
         component={Favourites}
         options={{
           headerShown: true,
-          tabBarLabel: 'Favourites',
+          tabBarLabel: 'Wishlist',
           tabBarIcon: ({color, size, focused}) =>
             <MaterialIcons name='favorite' size={size} color={color}/>
         }}
