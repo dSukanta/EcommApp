@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
-import { GLOBAL_COLOR } from '../../utils/Colors';
 import {useNavigation} from '@react-navigation/native';
+import { Colors } from '../../utils/Colors';
 
 const Splash = () => {
   const navigation= useNavigation();
@@ -23,7 +23,7 @@ export default Splash
 const styles = StyleSheet.create({
   container:{
     flex: 1,
-    backgroundColor: GLOBAL_COLOR,
+    backgroundColor: Colors.global,
     justifyContent: 'center',
     alignItems: 'center',
   }

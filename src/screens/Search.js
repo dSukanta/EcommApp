@@ -2,7 +2,7 @@ import { StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useState } from 'react'
 import { HeadingStyle, textStyle } from '../../utils/GlobalStyles'
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import { GLOBAL_COLOR } from '../../utils/Colors';
+import { Colors } from '../../utils/Colors';
 const Search = () => {
   const [focused,setFocused]= useState(false);
 
@@ -12,7 +12,7 @@ const Search = () => {
       <View>
           <TextInput
             placeholder='Looking for an item? Serach here...'
-            style={[styles.inputStyle,{borderColor: focused? GLOBAL_COLOR: 'grey'}]}
+            style={[styles.inputStyle,{borderColor: focused? Colors.global: 'grey'}]}
             onFocus={()=>setFocused(true)}
             onEndEditing={()=>setFocused(false)}
           />

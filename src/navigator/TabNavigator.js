@@ -7,11 +7,11 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Profile from '../screens/Profile';
-import { ACTIVE_TAB_COLOR, INACTIVE_TAB_COLOR, TAB_BACKG_COLOR } from '../../utils/Colors';
 import Search from '../screens/Search';
 import Favourites from '../screens/Favourites';
 import CustomHeader from '../components/CustomHeader';
 import Cart from '../screens/Cart';
+import { Colors } from '../../utils/Colors';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,13 +20,13 @@ const TabNavigator = () => {
     <Tab.Navigator
     screenOptions={{
       tabBarStyle: {
-        backgroundColor:TAB_BACKG_COLOR,
+        backgroundColor:Colors.tab_background,
         paddingBottom: 10,
         paddingTop:5,
         height:'9%',
       },
-      tabBarActiveTintColor:ACTIVE_TAB_COLOR,
-      tabBarInactiveTintColor: INACTIVE_TAB_COLOR ,
+      tabBarActiveTintColor:Colors.active_tab,
+      tabBarInactiveTintColor:Colors.inactive_tab ,
       tabBarHideOnKeyboard: true,
       header: (props) => <CustomHeader {...props} />,
     }}

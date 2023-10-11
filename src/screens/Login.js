@@ -1,81 +1,126 @@
-import {View, Text, StyleSheet, TextInput, Alert} from 'react-native';
-import React, {useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
-import { Button } from '@rneui/base';
+import React from 'react';
+import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { HeadingStyle, textStyle } from '../../utils/GlobalStyles';
+import { Colors} from '../../utils/Colors';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-const Login = () => {
-  const navigation = useNavigation();
-  const [email, setEmail] = useState('');
-  const [pass, setPass] = useState('');
-  const loginUser = () => {
-    // firestore()
-    //   .collection('Users')
-    //   .where('email', '==', email)
-    //   .get()
-    //   .then(querySnapshot => {
-    //     console.log(querySnapshot.doc[0]._data);
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
-  };
-  
+const Login = ({navigation}) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{'Login'}</Text>
-
-      <TextInput
-        placeholder="Enter Email"
-        style={styles.input}
-        value={email}
-        onChangeText={txt => setEmail(txt)}
+    <ScrollView contentContainerStyle={styles.container}>
+      <Image
+        source={require('../../assests/login_screen3.png')}
+        style={styles.image}
       />
+      <View style={styles.overlay}>
+        <Text style={[HeadingStyle,{fontSize:25}]}>Login</Text>
+        <Text style={[textStyle,{color:'blue', paddingVertical:10}]}>Welcome back!</Text>
+        <Text style={[textStyle,{paddingBottom:5}]}>We missed you a lot ! Let's resume the journey</Text>
 
-      <TextInput
-        placeholder="Enter password"
-        style={styles.input}
-        value={pass}
-        onChangeText={txt => setPass(txt)}
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          secureTextEntry
+        />
+        <TouchableOpacity style={styles.loginButton}>
+          <Text style={styles.loginButtonText}>Login</Text>
+          <MaterialCommunityIcons name='account-arrow-right' size={25} color={'white'}/>
+        </TouchableOpacity>
 
-      <Button title={'Login'} containerStyle={{paddingVertical:10,width:'90%',alignSelf:'center'}}/>
-      <Text
-        style={styles.loginText}
-        onPress={() => {
-          navigation.navigate('Signup');
-        }}>
-        {'Sign up'}
-      </Text>
-    </View>
+        <TouchableOpacity style={styles.googleButton}>
+          <Image source={require('../../assests/google.png')} style={{height:30,width:30,resizeMode:'contain'}}/>
+          <Text style={textStyle}>Login with Google</Text>
+        </TouchableOpacity>
+
+        <Text style={[textStyle,{padding:5}]}>
+          
+          <TouchableOpacity onPress={()=>navigation.navigate('Signup')}>
+          
+          </TouchableOpacity>
+        </Text>
+        <View style={{flexDirection:'row',alignItems:'center',gap:5}}>
+          <Text style={[textStyle]}>Don't have an account?</Text>
+          <TouchableOpacity onPress={()=>navigation.navigate('Signup')}>
+          <Text style={[textStyle,{color:Colors.textLink}]}>Sign up</Text>
+          </TouchableOpacity>
+        </View>
+        <Text style={[textStyle,{color:Colors.textLink,paddingVertical:5}]}>Forgot your password?</Text>
+      </View>
+    </ScrollView>
   );
 };
 
-export default Login;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    flexDirection: 'column',
   },
-  title: {
-    color: '#000',
-    fontSize: 40,
-    marginLeft: 20,
-    marginTop: 50,
-    marginBottom: 50,
+  image: {
+    resizeMode: 'cover',
+    height:'40%',
+    overflow:'hidden'
   },
-  input: {
-    width: '90%',
-    height: 50,
-    borderRadius: 10,
-    borderWidth: 0.5,
-    paddingLeft: 20,
-    alignSelf: 'center',
+  overlay: {
+    flex: 1,
+    backgroundColor: 'white', 
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 20,
+    position: 'absolute', 
+    bottom: 0, 
+    left: 0,
+    right: 0,
+  },
+  welcomeText: {
+    fontSize: 18,
     marginTop: 10,
   },
-  loginText: {
-    alignSelf: 'center',
+  input: {
+    backgroundColor:Colors.input_background2,
+    padding: 10,
+    marginTop: 10,
+    borderRadius: 10,
+  },
+  loginButton: {
+    backgroundColor:Colors.active_tab,
+    padding: 10,
+    alignItems: 'center',
+    marginTop: 10,
+    borderRadius: 10,
+    flexDirection:'row',
+    justifyContent: 'center',
+    gap:10
+  },
+  loginButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  googleButton: {
+    flexDirection:'row',
+    gap:10,
+    backgroundColor: Colors.input_background, 
+    padding: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    borderRadius: 5,
+  },
+  createAccountText: {
     marginTop: 20,
-    fontSize: 18,
-    textDecorationLine: 'underline',
+    fontSize: 16,
+  },
+  signupLink: {
+    color: '#007bff',
+  },
+  forgotPasswordText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: '#007bff',
   },
 });
+
+export default Login;

@@ -22,10 +22,10 @@ const AppNavigator = () => {
         <Stack.Screen name='Main' component={TabNavigator} options={{headerShown:false}}/>
         <Stack.Screen name='Login' component={Login} options={{headerShown:false}}/>
         <Stack.Screen name='Signup' component={Signup} options={{headerShown:false}}/>
-        <Stack.Screen name='Mens' component={Mens} options={{headerShown:false}}/>
-        <Stack.Screen name='Womens' component={Womens} options={{headerShown:false}}/>
-        <Stack.Screen name='Kids' component={Kids} options={{headerShown:false}}/>
-        <Stack.Screen name='Electronics' component={Electronics} options={{headerShown:false}}/>
+        <Stack.Screen name='Mens' component={Mens} options={{headerShown:true}}/>
+        <Stack.Screen name='Womens' component={Womens} options={{headerShown:true}}/>
+        <Stack.Screen name='Kids' component={Kids} options={{headerShown:true}}/>
+        <Stack.Screen name='Electronics' component={Electronics} options={{headerShown:true}}/>
     </Stack.Navigator>
    </NavigationContainer>
   )

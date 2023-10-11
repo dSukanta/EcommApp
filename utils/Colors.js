@@ -1,5 +1,15 @@
-export const TEXT_COLOR='#000';
-export const GLOBAL_COLOR='#8206ff';
-export const ACTIVE_TAB_COLOR='#ff1493';
-export const INACTIVE_TAB_COLOR='black';
-export const TAB_BACKG_COLOR='#ffe04c'
+
+export const Colors={
+   primary:"#000",
+   secondary:"#041E42",
+   textPrimary:"#000",
+   textLink:"#007bff",
+   global:"#8206ff",
+   active_tab:"#ff1493",
+   inactive_tab:"#000",
+   tab_background:"#ffe04c",
+   input_background:"#f5f5f5",
+   input_background2:"#D0D0D0",
+   input_icon:"grey",
+   secondary_btn:"#FA6713"
+}

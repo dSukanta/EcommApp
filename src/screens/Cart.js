@@ -7,10 +7,9 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {HeadingStyle, textStyle} from '../../utils/GlobalStyles';
-import {Button} from '@rneui/themed';
-import {ACTIVE_TAB_COLOR, GLOBAL_COLOR} from '../../utils/Colors';
+import { Colors } from '../../utils/Colors';
+
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([
@@ -105,7 +104,7 @@ const Cart = () => {
               Total: ${getTotalPrice().toFixed(2)}
             </Text>
             <TouchableOpacity style={styles.checkoutButton}>
-              <Text style={styles.checkoutButtonText}>Checkout</Text>
+              <Text style={[textStyle,{color:'#fff'}]}>Checkout</Text>
             </TouchableOpacity>
           </View>
         </>
@@ -191,15 +190,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   checkoutButton: {
-    backgroundColor: 'blue',
+    backgroundColor: Colors.active_tab,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 8,
-  },
-  checkoutButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
   },
   deleteBtn: {
     position: 'absolute',

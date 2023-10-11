@@ -1,4 +1,4 @@
-import { TEXT_COLOR } from "./Colors";
+import { INPUT_BACK_CLR, TEXT_COLOR } from "./Colors";
 
 export const textStyle={
     color:TEXT_COLOR,
@@ -10,5 +10,5 @@ export const textStyle={
 export const HeadingStyle={
     color:TEXT_COLOR,
     fontSize:18,
-    fontWeight:'500',
-}
+    fontWeight:'800',
+};

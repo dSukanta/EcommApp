@@ -8,11 +8,9 @@ import {
   Image,
 } from 'react-native';
 import React, {useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
 
 const Wishlist = () => {
 
-  // const navigation = useNavigation();
 
   return (
     <View style={styles.container}>

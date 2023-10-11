@@ -7,12 +7,8 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {textStyle} from '../../utils/GlobalStyles';
 
-const User = () => {
-  const navigation = useNavigation();
-  // const logout = async () => {
-  //   await AsyncStorage.removeItem('IS_USER_LOGGED_IN');
-  //   navigation.navigate('Login');
-  // };
+const Profile = () => {
+
   return (
     <View style={styles.container}>
       <Image
@@ -36,8 +32,8 @@ const User = () => {
         <Text style={[textStyle, {padding: 5}]}>Address</Text>
       </TouchableOpacity>
       <TouchableOpacity style={[styles.tab, {marginTop: 10}]}>
-        <FontAwesome name="credit-card" color={'black'} size={20} />
-        <Text style={[textStyle, {padding: 5}]}>Payment Methods</Text>
+        <MaterialCommunityIcons name="account-key" color={'black'} size={20} />
+        <Text style={[textStyle, {padding: 5}]}>Change Password</Text>
       </TouchableOpacity>
       <TouchableOpacity style={[styles.tab, {marginTop: 10}]}>
         <AntDesign name="logout" color={'black'} size={20} />
@@ -47,7 +43,8 @@ const User = () => {
   );
 };
 
-export default User;
+export default Profile;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
