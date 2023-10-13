@@ -11,6 +11,8 @@ import Mens from '../screens/Mens';
 import Womens from '../screens/Womens';
 import Kids from '../screens/Kids';
 import Electronics from '../screens/Electronics';
+import Checkout from '../screens/Checkout';
+import ProductDetails from '../screens/ProductDetails';
 
 const Stack= createStackNavigator();
 
@@ -26,6 +28,8 @@ const AppNavigator = () => {
         <Stack.Screen name='Womens' component={Womens} options={{headerShown:true}}/>
         <Stack.Screen name='Kids' component={Kids} options={{headerShown:true}}/>
         <Stack.Screen name='Electronics' component={Electronics} options={{headerShown:true}}/>
+        <Stack.Screen name='Checkout' component={Checkout} options={{headerShown:false}}/>
+        <Stack.Screen name='Productdetails' component={ProductDetails} options={({route})=>({headerShown:true,title:`${route?.params?.title?.substring(0,10)}...` })} />
     </Stack.Navigator>
    </NavigationContainer>
   )

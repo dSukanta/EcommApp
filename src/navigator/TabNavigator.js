@@ -61,7 +61,7 @@ const TabNavigator = () => {
             <MaterialCommunityIcons name='cart' size={size} color={color}/>
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Wishlist"
         component={Favourites}
         options={{
@@ -70,7 +70,7 @@ const TabNavigator = () => {
           tabBarIcon: ({color, size, focused}) =>
             <MaterialIcons name='favorite' size={size} color={color}/>
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Profile"
         component={Profile}
@@ -79,7 +79,7 @@ const TabNavigator = () => {
           tabBarLabel: 'Profile',
           tabBarIcon: ({color, size, focused}) =>
             <FontAwesome name='user' size={size} color={color}/>
-        }}
+        }} 
       />
     </Tab.Navigator>
   );

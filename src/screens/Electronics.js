@@ -15,10 +15,11 @@ import {Dimensions} from 'react-native';
 import {textStyle} from '../../utils/GlobalStyles';
 import {Button} from '@rneui/base';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import ProductCard from '../components/ProductCard';
 
 const {width, height} = Dimensions.get('window');
 
-const Electronics = () => {
+const Electronics = ({navigation}) => {
   const {data, loading, error} = useFetch(
     `${BASE_URL}/products/category/electronics`,
   );
@@ -63,7 +64,7 @@ const Electronics = () => {
           <FlatList
             numColumns={2}
             data={data}
-            renderItem={({item}) => renderCard(item)}
+            renderItem={({item}) => <ProductCard item={item} navigation={navigation}/>}
             showsVerticalScrollIndicator={false}
           />
         </View>

@@ -15,54 +15,13 @@ import {Dimensions} from 'react-native';
 import {textStyle} from '../../utils/GlobalStyles';
 import {Button} from '@rneui/base';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import ProductCard from '../components/ProductCard';
 
 const {width, height} = Dimensions.get('window');
 
-const Mens = () => {
+const Mens = ({navigation}) => {
   const {data, loading, error} = useFetch(
     `${BASE_URL}/products/category/men's clothing`,
-  );
-
-  const renderCard = item => (
-    <View key={item.id} style={styles.column}>
-      <FontAwesome name='cart-plus' size={20} color={'white'} style={{position:'absolute', top:10,right:10,zIndex:1,padding:5,borderRadius:20, backgroundColor:Colors.input_background2}}/>
-      <Image source={{uri: item?.image}} style={styles.cardImage} />
-      <Text style={[textStyle, {fontSize: 16, padding: 5}]}>
-        {item?.title.substring(0, 15)}
-      </Text>
-      <View style={{flexDirection: 'row', gap: 5, alignItems: 'center'}}>
-        <Text
-          style={[textStyle, {padding: 5, textDecorationLine: 'line-through'}]}>
-          ${(item?.price + 30).toFixed(2)}
-        </Text>
-        <Text style={[textStyle, {color: 'green'}]}>${item.price}</Text>
-      </View>
-      <View>
-        {/* <Button
-          title={'Add to Cart'}
-          icon={{
-            name: 'cart-plus',
-            type: 'font-awesome',
-            color: 'white',
-            size: 10,
-          }}
-          iconPosition="top"
-          buttonStyle={{backgroundColor: Colors.active_tab}}
-        /> */}
-        <Button
-          title={'Buy Now'}
-          icon={{
-            name: 'electric-bolt',
-            type: 'material-icons',
-            color: 'white',
-            size: 10,
-          }}
-          iconPosition="left"
-          buttonStyle={{backgroundColor: Colors.secondary_btn,margin:10}}
-          titleStyle={[textStyle,{color:'white'}]}
-        />
-      </View>
-    </View>
   );
 
   return (
@@ -74,7 +33,7 @@ const Mens = () => {
           <FlatList
             numColumns={2}
             data={data}
-            renderItem={({item}) => renderCard(item)}
+            renderItem={({item}) => <ProductCard item={item} navigation={navigation}/>}
             showsVerticalScrollIndicator={false}
           />
         </View>

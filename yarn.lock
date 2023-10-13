@@ -2602,6 +2602,11 @@ caniuse-lite@^1.0.30001541:
   resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001546.tgz"
   integrity sha512-zvtSJwuQFpewSyRrI3AsftF6rM0X80mZkChIt1spBGEvRglCrjTniXvinc8JKRoqTwXAgvqTImaN9igfSMtUBw==
 
+carousel-with-pagination-rn@^1.1.8:
+  version "1.1.8"
+  resolved "https://registry.npmjs.org/carousel-with-pagination-rn/-/carousel-with-pagination-rn-1.1.8.tgz"
+  integrity sha512-O45IT4+V+dt/H8GE16aaGpERB/Dp0g86lvuKUEFIR8pBjixzA4vlxjcjSJ+FutLeDusmw2IVdnULWePKmKeshQ==
+
 chalk@^2.4.2:
   version "2.4.2"
   resolved "https://registry.npmjs.org/chalk/-/chalk-2.4.2.tgz"
@@ -5716,7 +5721,7 @@ react-native-dotenv@^3.4.9:
   dependencies:
     dotenv "^16.3.1"
 
-react-native-gesture-handler@^2.13.1, "react-native-gesture-handler@>= 1.0.0":
+react-native-gesture-handler@*, react-native-gesture-handler@^2.13.1, "react-native-gesture-handler@>= 1.0.0":
   version "2.13.1"
   resolved "https://registry.npmjs.org/react-native-gesture-handler/-/react-native-gesture-handler-2.13.1.tgz"
   integrity sha512-hW454X7sjuiBN+lobqw63pmT3boAmTl5OP6zQLq83iEe4T6PcHZ9lxzgCrebtgmutY8cJfq9rM2dOUVh9WBcww==
@@ -5767,6 +5772,16 @@ react-native-splash-screen@^3.3.0:
   resolved "https://registry.npmjs.org/react-native-splash-screen/-/react-native-splash-screen-3.3.0.tgz"
   integrity sha512-rGjt6HkoSXxMqH4SQUJ1gnPQlPJV8+J47+4yhgTIan4bVvAwJhEeJH7wWt9hXSdH4+VfwTS0GTaflj1Tw83IhA==
 
+react-native-swiper-flatlist@^3.2.3:
+  version "3.2.3"
+  resolved "https://registry.npmjs.org/react-native-swiper-flatlist/-/react-native-swiper-flatlist-3.2.3.tgz"
+  integrity sha512-L4KSy4X1mzUx9a/gZa+lBpY7agS/GHCSzSjHjpIDQB7qh03jKm4PsKyYE5KfFzJRzBMm/srfrixfWzHncZmhkQ==
+
+react-native-toast-message@^2.1.6:
+  version "2.1.6"
+  resolved "https://registry.npmjs.org/react-native-toast-message/-/react-native-toast-message-2.1.6.tgz"
+  integrity sha512-VctXuq20vmRa9AE13acaNZhrLcS3FaBS2zEevS3+vhBsnVZYG0FIlWIis9tVnpnNxUb3ART+BWtwQjzSttXTng==
+
 react-native-vector-icons@^10.0.0, react-native-vector-icons@>7.0.0:
   version "10.0.0"
   resolved "https://registry.npmjs.org/react-native-vector-icons/-/react-native-vector-icons-10.0.0.tgz"
@@ -5775,7 +5790,7 @@ react-native-vector-icons@^10.0.0, react-native-vector-icons@>7.0.0:
     prop-types "^15.7.2"
     yargs "^16.1.1"
 
-react-native@*, "react-native@^0.0.0-0 || 0.60 - 0.72 || 1000.0.0", react-native@>=0.57.0, react-native@0.72.5:
+react-native@*, "react-native@^0.0.0-0 || 0.60 - 0.72 || 1000.0.0", react-native@>=0.57.0, react-native@>=0.59.0, react-native@0.72.5:
   version "0.72.5"
   resolved "https://registry.npmjs.org/react-native/-/react-native-0.72.5.tgz"
   integrity sha512-oIewslu5DBwOmo7x5rdzZlZXCqDIna0R4dUwVpfmVteORYLr4yaZo5wQnMeR+H7x54GaMhmgeqp0ZpULtulJFg==

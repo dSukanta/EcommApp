@@ -11,7 +11,7 @@ import {HeadingStyle, textStyle} from '../../utils/GlobalStyles';
 import { Colors } from '../../utils/Colors';
 
 
-const Cart = () => {
+const Cart = ({navigation}) => {
   const [cartItems, setCartItems] = useState([
     {
       id: 1,
@@ -58,6 +58,10 @@ const Cart = () => {
     setCartItems(updatedCartItems);
   };
 
+  const handleCheckout=()=>{
+    navigation.navigate('Checkout',{product:cartItems});
+  }
+
   const renderItem = item => {
     return (
       <View style={styles.cartItem}>
@@ -103,7 +107,7 @@ const Cart = () => {
             <Text style={styles.totalText}>
               Total: ${getTotalPrice().toFixed(2)}
             </Text>
-            <TouchableOpacity style={styles.checkoutButton}>
+            <TouchableOpacity style={styles.checkoutButton} onPress={handleCheckout}>
               <Text style={[textStyle,{color:'#fff'}]}>Checkout</Text>
             </TouchableOpacity>
           </View>

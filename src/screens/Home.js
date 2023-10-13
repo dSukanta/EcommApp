@@ -3,6 +3,7 @@ import React from 'react';
 import { Image } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import { textStyle } from '../../utils/GlobalStyles';
+import Slider from '../components/Slider';
 
 
 const Home = () => {
@@ -39,6 +40,9 @@ const Home = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+       <View>
+      <Slider/>
+    </View>
       <View>
       <FlatList
         numColumns={2}
