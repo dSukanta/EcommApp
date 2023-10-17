@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View,Image, Dimensions,ScrollView,TouchableOpacity,ActivityIndicator} from 'react-native'
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { HeadingStyle, textStyle } from '../../utils/GlobalStyles'
 import { useFetch } from '../../utils/customHook';
 import {BASE_URL} from '@env';
@@ -7,24 +7,39 @@ import { Button } from '@rneui/themed';
 import { Colors } from '../../utils/Colors';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Rating } from '@rneui/themed';
+import { FetchData } from '../../utils/Functions';
 
 const {width, height} = Dimensions.get('window');
 
 const ProductDetails = ({route,navigation}) => {
 
   const [readMore,setReadMore]= useState(false);
+  const [product,setProduct] = useState();
+  const [loading,setLoading] = useState(false);
 
-  const {data, loading, error} = useFetch(
-    `${BASE_URL}/products/${route?.params.product}`,
-  );
+  const getProductdetails=async(id)=>{
+    setLoading(true)
+    const res= await FetchData(`products/${id}`);
+    setProduct(res);
+    setLoading(false);
+  };
+
+  useEffect(()=>{
+    getProductdetails(route?.params.product)
+  },[route?.params.product]);
+  
+  // const {data, loading, error} = useFetch(
+  //   `${BASE_URL}/products/${route?.params.product}`,
+  // );
 
   const checkoutData=[
     {
-      title: data?.title,
-      price: data?.price,
+      title: product?.title,
+      price: product?.price,
       quantity:1,
     }
   ];
+
 
   if(loading){
     return <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
@@ -34,17 +49,17 @@ const ProductDetails = ({route,navigation}) => {
 
 
   return (
-    <ScrollView key={data.id} contentContainerStyle={styles.column} showsVerticalScrollIndicator={false}>
+    <ScrollView key={product?.id} contentContainerStyle={styles.column} showsVerticalScrollIndicator={false}>
       <FontAwesome name='cart-plus' size={20} color={'white'} style={{position:'absolute', top:10,right:10,zIndex:1,padding:5,borderRadius:20, backgroundColor:Colors.input_background2}}/>
-      <Image source={{uri: data?.image}} style={styles.cardImage} />
+      <Image source={{uri: product?.image}} style={styles.cardImage} />
       <View style={{alignSelf:'flex-start',padding:10,marginBottom:0,borderWidth:1, borderColor:Colors.input_background2}}>
-        <Text style={[textStyle,{textTransform:"capitalize"}]}>{data?.category}</Text>
+        <Text style={[textStyle,{textTransform:"capitalize"}]}>{product?.category}</Text>
       </View>
       <Text style={[textStyle, {fontSize: 15, padding: 10,alignSelf:'flex-start'}]}>
-        {data?.title}
+        {product?.title}
       </Text>
       <View>
-      <Text style={[textStyle,{paddingHorizontal:10}]}>{readMore? data?.description:data?.description?.substring(0,150)}...</Text>
+      <Text style={[textStyle,{paddingHorizontal:10}]}>{product?.description?.length>150?readMore? product?.description:product?.description?.substring(0,150)+"...":product?.description}</Text>
       <TouchableOpacity onPress={()=>setReadMore(!readMore)}>
       <Text style={[textStyle,{color:Colors.textLink,paddingHorizontal:10,}]}>{readMore?'read less':'read more'}</Text>
       </TouchableOpacity>
@@ -53,9 +68,9 @@ const ProductDetails = ({route,navigation}) => {
       <View style={{flexDirection: 'row', gap: 10, alignSelf:'flex-start',padding:10,alignItems:'center'}}>
         <Text
           style={[textStyle, {textDecorationLine: 'line-through'}]}>
-          ${(data?.price + 30).toFixed(2)}
+          ${(Number(product?.price) + 30)}
         </Text>
-        <Text style={[textStyle, {color: 'green',fontSize:20}]}>${data.price}</Text>
+        <Text style={[textStyle, {color: 'green',fontSize:20}]}>${product?.price}</Text>
       </View>
       <View style={{width:'100%'}}>
         <Button

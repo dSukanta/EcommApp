@@ -39,7 +39,7 @@ const Slider = () => {
         // paginationStyleItemActive={}
       >
         {slideData?.map((el, i) => (
-          <View style={[styles.child, {backgroundColor: 'tomato'}]}>
+          <View style={[styles.child, {backgroundColor: 'tomato'}]} key={i}>
             <Image source={{uri:el.image}} style={{width:'100%',height:'100%',resizeMode:'contain'}}/>
           </View>
         ))}

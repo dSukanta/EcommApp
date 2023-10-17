@@ -1,10 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { HeadingStyle, textStyle } from '../../utils/GlobalStyles';
 import { Colors} from '../../utils/Colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import { postData, saveToStorage } from '../../utils/Functions';
+import Toast from 'react-native-toast-message';
 
 const Login = ({navigation}) => {
+
+  const [email,setEmail]= useState();
+  const [password,setPassword]= useState();
+
+  const handlelogin= async()=>{
+     const res= await postData(`user/auth/signin`,"POST",{email:email,password:password});
+     await saveToStorage("token",res?.token)
+     if(res.error===false){
+       Toast.show({
+        type:'success',
+        text1: "Success!",
+        text2: res.message,
+       });
+       setTimeout(()=>{
+        navigation.navigate('Home');
+       },1000)
+     }else{
+      Toast.show({
+        type:'error',
+        text1: "Error!",
+        text2: res.message,
+       })
+     }
+  }
+
+
+
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Image
@@ -19,13 +49,15 @@ const Login = ({navigation}) => {
         <TextInput
           style={styles.input}
           placeholder="Email"
+          onChangeText={setEmail}
         />
         <TextInput
           style={styles.input}
           placeholder="Password"
           secureTextEntry
+          onChangeText={setPassword}
         />
-        <TouchableOpacity style={styles.loginButton}>
+        <TouchableOpacity style={styles.loginButton} onPress={handlelogin}>
           <Text style={styles.loginButtonText}>Login</Text>
           <MaterialCommunityIcons name='account-arrow-right' size={25} color={'white'}/>
         </TouchableOpacity>
@@ -49,6 +81,7 @@ const Login = ({navigation}) => {
         </View>
         <Text style={[textStyle,{color:Colors.textLink,paddingVertical:5}]}>Forgot your password?</Text>
       </View>
+      <Toast/>
     </ScrollView>
   );
 };

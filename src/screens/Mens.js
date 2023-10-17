@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {useFetch} from '../../utils/customHook';
 import {BASE_URL} from '@env';
 import {Colors} from '../../utils/Colors';
@@ -16,13 +16,24 @@ import {textStyle} from '../../utils/GlobalStyles';
 import {Button} from '@rneui/base';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ProductCard from '../components/ProductCard';
+import { FetchData } from '../../utils/Functions';
 
 const {width, height} = Dimensions.get('window');
 
 const Mens = ({navigation}) => {
-  const {data, loading, error} = useFetch(
-    `${BASE_URL}/products/category/men's clothing`,
-  );
+  const [products,setProducts]= useState([]);
+  const [loading,setLoading]= useState(false);
+  const getProducts= async()=>{
+    setLoading(true);
+    const res= await FetchData('products');
+    const data= await res?.filter((product)=>product?.category==="Men");
+    setProducts(data);
+    setLoading(false)
+  };
+
+  useEffect(()=>{
+    getProducts();
+  },[])
 
   return (
     <View style={styles.container}>
@@ -32,7 +43,7 @@ const Mens = ({navigation}) => {
         <View>
           <FlatList
             numColumns={2}
-            data={data}
+            data={products}
             renderItem={({item}) => <ProductCard item={item} navigation={navigation}/>}
             showsVerticalScrollIndicator={false}
           />

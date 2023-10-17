@@ -42,7 +42,7 @@ const ProductCard = ({item,navigation}) => {
       <View style={{flexDirection: 'row', gap: 5, alignItems: 'center'}}>
         <Text
           style={[textStyle, {padding: 5, textDecorationLine: 'line-through'}]}>
-          ${(item?.price + 30).toFixed(2)}
+          ${(Number(item?.price) + 30)}
         </Text>
         <Text style={[textStyle, {color: 'green'}]}>${item.price}</Text>
       </View>
@@ -60,7 +60,7 @@ const ProductCard = ({item,navigation}) => {
           titleStyle={[textStyle, {color: 'white'}]}
           onPress={() =>
             navigation.navigate('Productdetails', {
-              product: item.id,
+              product: item._id,
               title: item.title,
             })
           }
@@ -99,6 +99,6 @@ const styles = StyleSheet.create({
         height: 100,
         resizeMode: 'contain',
         borderRadius: 10,
-        zIndex:-1
+        zIndex:-1,
       },
 });

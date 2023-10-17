@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {useFetch} from '../../utils/customHook';
 import {BASE_URL} from '@env';
 import {Colors} from '../../utils/Colors';
@@ -16,44 +16,24 @@ import {textStyle} from '../../utils/GlobalStyles';
 import {Button} from '@rneui/base';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ProductCard from '../components/ProductCard';
+import { FetchData } from '../../utils/Functions';
 
 const {width, height} = Dimensions.get('window');
 
 const Womens = ({navigation}) => {
-  const {data, loading, error} = useFetch(
-    `${BASE_URL}/products/category/women's clothing`,
-  );
+  const [products,setProducts]= useState([]);
+  const [loading,setLoading]= useState(false);
+  const getProducts= async()=>{
+    setLoading(true);
+    const res= await FetchData('products');
+    const data= await res?.filter((product)=>product?.category==="Women");
+    setProducts(data);
+    setLoading(false)
+  };
 
-  const renderCard = item => (
-    <View key={item.id} style={styles.column}>
-      <FontAwesome name='cart-plus' size={20} color={'white'} style={{position:'absolute', top:10,right:10,zIndex:1,padding:5,borderRadius:20, backgroundColor:Colors.input_background2}}/>
-      <Image source={{uri: item?.image}} style={styles.cardImage} />
-      <Text style={[textStyle, {fontSize: 16, padding: 5}]}>
-        {item?.title.substring(0, 15)}
-      </Text>
-      <View style={{flexDirection: 'row', gap: 5, alignItems: 'center'}}>
-        <Text
-          style={[textStyle, {padding: 5, textDecorationLine: 'line-through'}]}>
-          ${(item?.price + 30).toFixed(2)}
-        </Text>
-        <Text style={[textStyle, {color: 'green'}]}>${item.price}</Text>
-      </View>
-      <View>
-        <Button
-          title={'Buy Now'}
-          icon={{
-            name: 'electric-bolt',
-            type: 'material-icons',
-            color: 'white',
-            size: 10,
-          }}
-          iconPosition="left"
-          buttonStyle={{backgroundColor: Colors.secondary_btn,margin:10}}
-          titleStyle={[textStyle,{color:'white'}]}
-        />
-      </View>
-    </View>
-  );
+  useEffect(()=>{
+    getProducts();
+  },[])
 
   return (
     <View style={styles.container}>
@@ -63,7 +43,7 @@ const Womens = ({navigation}) => {
         <View>
           <FlatList
             numColumns={2}
-            data={data}
+            data={products}
             renderItem={({item}) => <ProductCard item={item} navigation={navigation}/>}
             showsVerticalScrollIndicator={false}
           />

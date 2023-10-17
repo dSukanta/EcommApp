@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -8,14 +8,13 @@ import {
 } from 'react-native';
 import {textStyle} from '../../utils/GlobalStyles';
 import {Colors} from '../../utils/Colors';
-import { useFetch } from '../../utils/customHook';
+import {useFetch} from '../../utils/customHook';
 import {BASE_URL} from '@env';
+import RazorpayCheckout from 'react-native-razorpay';
 
-const CheckoutPage = ({route,navigation}) => {
-  
-  const {product}= route?.params;
+const CheckoutPage = ({route, navigation}) => {
+  const {product} = route?.params;
 
-  console.log(product,'product')
 
   const getTotalPrice = () => {
     return product?.reduce(
@@ -24,7 +23,31 @@ const CheckoutPage = ({route,navigation}) => {
     );
   };
 
-  
+  var options = {
+    description: 'Paymet to buy product',
+    image: require('../../assests/logo.jpg'),
+    currency: 'INR',
+    key: 'rzp_test_2VYHup8J177yIx',
+    amount: getTotalPrice() * 100,
+    name: 'E-Commerce',
+    order_id: '', //Replace this with an order_id created using Orders API.
+    // prefill: {
+    //   email: 'abc@gmail.com',
+    //   contact: mobile,
+    //   name: name,
+    // },
+    theme: {color: '#EC9912'},
+  };
+
+  const handleCheckout = () => {
+    RazorpayCheckout.open(options)
+      .then(data => {
+        console.log(data, 'payment-data');
+      })
+      .catch(error => {
+        console.log(error, 'payment-error');
+      });
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -42,15 +65,15 @@ const CheckoutPage = ({route,navigation}) => {
 
         {/* Replace with a dynamic list of products */}
         {/* Example row for a product */}
-       {product?.map((el,i)=>
-        <View style={styles.tableRow} key={i}>
-        <Text style={styles.tableCell}>{el?.title}</Text>
-        <Text style={styles.tableCell}>${el?.price}</Text>
-        <Text style={styles.tableCell}>{el?.quantity}</Text>
-        <Text style={styles.tableCell}>${el?.price*el?.quantity}</Text>
-      </View>
-        )}
-        <View style={[styles.tableRow, {paddingBottom:5}]}>
+        {product?.map((el, i) => (
+          <View style={styles.tableRow} key={i}>
+            <Text style={styles.tableCell}>{el?.title}</Text>
+            <Text style={styles.tableCell}>${el?.price}</Text>
+            <Text style={styles.tableCell}>{el?.quantity}</Text>
+            <Text style={styles.tableCell}>${el?.price * el?.quantity}</Text>
+          </View>
+        ))}
+        <View style={[styles.tableRow, {paddingBottom: 5}]}>
           <Text style={styles.tableCell}>Grand Total</Text>
           <Text style={styles.tableCell}></Text>
           <Text style={styles.tableCell}></Text>
@@ -77,8 +100,10 @@ const CheckoutPage = ({route,navigation}) => {
       </TouchableOpacity>
 
       {/* Pay Button */}
-      <TouchableOpacity style={styles.payButton}>
-        <Text style={styles.payButtonText}>Pay ${getTotalPrice()?.toFixed(2)}</Text>
+      <TouchableOpacity style={styles.payButton} onPress={handleCheckout}>
+        <Text style={styles.payButtonText}>
+          Pay ${getTotalPrice()?.toFixed(2)}
+        </Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -158,7 +183,7 @@ const styles = StyleSheet.create({
   },
   tableCell: {
     flex: 1,
-    color:'black'
+    color: 'black',
   },
 });
 
