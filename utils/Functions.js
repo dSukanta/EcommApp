@@ -19,6 +19,14 @@ export const getFromStorage= async(name)=>{
       }
 };
 
+export const removeFromStorage= async(name)=>{
+    try {
+        await AsyncStorage.removeItem(name);
+      } catch(e) {
+        return `Error removing`
+      }
+}
+
 
 export const FetchData= async(endpoint="/",method="GET")=>{
     
@@ -41,7 +49,7 @@ export const postData= async(endpoint="/",method="POST",body={})=>{
         headers: myHeaders,
         body: JSON.stringify(body)
     }
-    console.log(body,'data')
+    // console.log(body,'data')
     const res= await fetch(`${BASE_URL}/${endpoint}`,options);
     const data= res.json();
     return data;
@@ -55,6 +63,22 @@ export const restrictedRequest= async(endpoint="/",method="GET",token)=>{
         headers: myHeaders, 
     };
 
+    const res= await fetch(`${BASE_URL}/${endpoint}`,options);
+    const data= res.json();
+    return data;
+};
+
+export const restrictedPost= async(endpoint="/",method="POST",body,token)=>{
+    const myHeaders= new Headers();
+    myHeaders.append("Content-Type", "application/json"); 
+    myHeaders.append("Authorization", `Bearer ${token}`);
+
+    const options = {
+        method: method,
+        headers: myHeaders,
+        body: JSON.stringify(body)
+    }
+    // console.log(body,'data')
     const res= await fetch(`${BASE_URL}/${endpoint}`,options);
     const data= res.json();
     return data;

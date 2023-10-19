@@ -1,33 +1,102 @@
-import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import {Image, StyleSheet, Text, View, TouchableOpacity,Alert} from 'react-native';
+import React, {useEffect, useState,useContext} from 'react';
 import {Button, Dialog} from '@rneui/base';
 import {useNavigation} from '@react-navigation/native';
-import {TAB_BACKG_COLOR} from '../../utils/Colors';
-import {getFromStorage, restrictedRequest} from '../../utils/Functions';
+import {Colors, TAB_BACKG_COLOR} from '../../utils/Colors';
+import {
+  getFromStorage,
+  removeFromStorage,
+  restrictedRequest,
+} from '../../utils/Functions';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {HeadingStyle} from '../../utils/GlobalStyles';
+import Toast from 'react-native-toast-message';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { Appcontext } from '../../context/AppContext';
 
 const CustomHeader = () => {
-  const [user, setUser] = useState(null);
-  const [dialogVisible, setDialogVisible] = useState(false);
   const navigation = useNavigation();
+  const [dialogVisible, setDialogVisible] = useState(false);
+  const {userData,setUserData,userToken,setUserToken}= useContext(Appcontext);
 
-  const getUser = async () => {
-    const token = await getFromStorage('token');
-    if (token) {
-      const res = await restrictedRequest('user/auth/me', 'GET', token);
-      setUser(res.data);
+
+  const logout = async () => {
+    setDialogVisible(false);
+    const res = await removeFromStorage('token');
+    if (res !== 'Error removing') {
+      Toast.show({
+        type: 'success',
+        text1: 'Logout successfully',
+      });
+      setTimeout(() => {
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'Login'}],
+        });
+      }, 500);
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong. try again later.',
+      });
     }
   };
 
+  const handleLogout = () => {
+
+    setDialogVisible(false);
+
+    Alert.alert('Are your sure?', 'Are you sure you want to Logout?', [
+      {
+        text: 'Yes',
+        onPress: () => logout(),
+      },
+      {
+        text: 'No',
+        onPress: () => setDialogVisible(true),
+      },
+    ]);
+    // ...
+  };
+
+  const options = [
+    {
+      title: 'Profile',
+      onPress: () => {setDialogVisible(false); navigation.navigate('Profile')},
+      icon: <FontAwesome5 name="user-cog" size={20} />,
+    },
+    {
+      title: 'Logout',
+      onPress: () => handleLogout(),
+      icon: <FontAwesome5 name="sign-out-alt" size={20} />,
+    },
+  ];
+
+
+  const getUser = async () => {
+    const token = await getFromStorage('token');
+
+    if (token) {
+      const res = await restrictedRequest('user/auth/me', 'GET', token);
+      setUserData(res.data);
+      setUserToken(token);
+    }
+  };
+
+  // console.log('header render')
+
+
   useEffect(() => {
     getUser();
-  }, []);
+  }, [userToken]);
+  
 
   return (
     <View style={styles.container}>
       <View>
         <Image source={require('../../assests/logo.jpg')} style={styles.logo} />
       </View>
-      {!user ? (
+      {!userData ? (
         <View style={styles.btnContainer}>
           <Button
             title="Login"
@@ -55,24 +124,41 @@ const CustomHeader = () => {
           />
         </View>
       ) : (
-        <TouchableOpacity onPress={()=>setDialogVisible(true)}>
-          <Image source={{uri: user?.user_image}} style={styles.logo} />
+        <TouchableOpacity onPress={() => setDialogVisible(true)}>
+          <Image source={{uri: userData?.user_image}} style={styles.logo} />
         </TouchableOpacity>
       )}
-      <Dialog isVisible={dialogVisible} onBackdropPress={()=>setDialogVisible(false)}>
-        <Dialog.Title title="Dialog Title" />
-        <Text>Dialog body text. Add relevant information here.</Text>
-        <Dialog.Actions>
-          <Dialog.Button
-            title="ACTION 1"
-            onPress={() => console.log('Primary Action Clicked!')}
-          />
-          <Dialog.Button
-            title="ACTION 2"
-            onPress={() => console.log('Secondary Action Clicked!')}
-          />
-        </Dialog.Actions>
+      <Dialog
+        isVisible={dialogVisible}
+        onBackdropPress={() => setDialogVisible(false)}
+        overlayStyle={{backgroundColor: '#fff', padding: 0}}>
+        <View>
+          <View style={styles.modalContainer}>
+            <FontAwesome name="user-circle" size={30} />
+            <Text style={[HeadingStyle, {color: Colors.secondary}]}>
+              {userData?.name}
+            </Text>
+          </View>
+          <View>
+            {options.map((option, i) => (
+              <TouchableOpacity
+                key={i}
+                style={[
+                  styles.btnContainer,
+                  {
+                    padding: 10,
+                    borderBottomWidth: 1,
+                    borderColor: Colors.input_background2,
+                  },
+                ]} onPress={option.onPress}>
+                {option?.icon}
+                <Text>{option?.title}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
       </Dialog>
+      <Toast/>
     </View>
   );
 };
@@ -96,5 +182,13 @@ const styles = StyleSheet.create({
   btnContainer: {
     flexDirection: 'row',
     gap: 10,
+  },
+  modalContainer: {
+    flexDirection: 'row',
+    gap: 10,
+    padding: 10,
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderColor: Colors.input_background2,
   },
 });

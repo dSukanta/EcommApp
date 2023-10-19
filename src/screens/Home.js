@@ -1,7 +1,7 @@
-import {FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View,Alert,BackHandler} from 'react-native';
 import React from 'react';
 import { Image } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import { textStyle } from '../../utils/GlobalStyles';
 import Slider from '../components/Slider';
 
@@ -28,6 +28,29 @@ const Home = () => {
       image: require('../../assests/electronics.jpg'),
     },
   ];
+
+  useFocusEffect(() => {
+    const onBackPress = () => {
+      Alert.alert(
+        'Exit App',
+        'Do you want to exit?',
+        [
+          {
+            text: 'No',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'Yes', onPress: () => BackHandler.exitApp()},
+        ],
+        {cancelable: false},
+      );
+      return true;
+    };
+    BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    };
+  });
 
   const renderCard = (item) => (
     <TouchableOpacity style={styles.column} key={item.id} onPress={()=>navigation.navigate(item.name)}>

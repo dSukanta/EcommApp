@@ -33,8 +33,9 @@ const Mens = ({navigation}) => {
 
   useEffect(()=>{
     getProducts();
-  },[])
+  },[]);
 
+// console.log('mens page rendered');
   return (
     <View style={styles.container}>
       {loading ? (

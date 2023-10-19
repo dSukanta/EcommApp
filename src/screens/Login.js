@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { HeadingStyle, textStyle } from '../../utils/GlobalStyles';
 import { Colors} from '../../utils/Colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -8,10 +8,27 @@ import Toast from 'react-native-toast-message';
 
 const Login = ({navigation}) => {
 
-  const [email,setEmail]= useState();
-  const [password,setPassword]= useState();
+  const [email,setEmail]= useState("");
+  const [password,setPassword]= useState("");
 
   const handlelogin= async()=>{
+
+    if(!email){
+      Toast.show({
+        type:'error',
+        text1: "Error!",
+        text2: `email is required`,
+       });
+       return;
+    };
+    if(!password){
+      Toast.show({
+        type:'error',
+        text1: "Error!",
+        text2: `password is required`,
+       });
+       return;
+    };
      const res= await postData(`user/auth/signin`,"POST",{email:email,password:password});
      await saveToStorage("token",res?.token)
      if(res.error===false){
@@ -21,7 +38,10 @@ const Login = ({navigation}) => {
         text2: res.message,
        });
        setTimeout(()=>{
-        navigation.navigate('Home');
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'Main',screen:'Home'}],
+        });
        },1000)
      }else{
       Toast.show({

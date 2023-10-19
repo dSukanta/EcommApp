@@ -16,6 +16,7 @@ import {
 import { textStyle } from './utils/GlobalStyles';
 import AppNavigator from './src/navigator/AppNavigator';
 import SplashScreen from 'react-native-splash-screen'
+import { AppContextProvider } from './context/AppContext';
 
 
 
@@ -26,7 +27,9 @@ function App() {
   },[]);
   
   return (
+    <AppContextProvider>
     <AppNavigator/>
+    </AppContextProvider>
   );
 }
 
