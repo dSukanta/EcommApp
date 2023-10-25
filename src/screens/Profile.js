@@ -1,14 +1,21 @@
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React,{useContext} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {textStyle} from '../../utils/GlobalStyles';
+import {restrictedRequest} from '../../utils/Functions';
+import { Appcontext } from '../../context/AppContext';
 
 const Profile = () => {
+const {userData,setUserData,userToken,setUserToken}= useContext(Appcontext);
 
+  const getUserProfile= async()=>{
+    const res= await restrictedRequest('/user/me','GET',userToken);
+    console.log(res);
+  }
   return (
     <View style={styles.container}>
       <Image
