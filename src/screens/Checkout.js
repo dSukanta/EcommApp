@@ -13,7 +13,7 @@ import {BASE_URL} from '@env';
 import RazorpayCheckout from 'react-native-razorpay';
 
 const CheckoutPage = ({route, navigation}) => {
-  const {product} = route?.params;
+  const {product,total} = route?.params;
 
 
   const getTotalPrice = () => {
@@ -67,17 +67,17 @@ const CheckoutPage = ({route, navigation}) => {
         {/* Example row for a product */}
         {product?.map((el, i) => (
           <View style={styles.tableRow} key={i}>
-            <Text style={styles.tableCell}>{el?.title}</Text>
-            <Text style={styles.tableCell}>${el?.price}</Text>
+            <Text style={styles.tableCell}>{el?.product?.title}</Text>
+            <Text style={styles.tableCell}>${el?.product?.price}</Text>
             <Text style={styles.tableCell}>{el?.quantity}</Text>
-            <Text style={styles.tableCell}>${el?.price * el?.quantity}</Text>
+            <Text style={styles.tableCell}>${Number(el?.product?.price) * Number(el?.quantity)}</Text>
           </View>
         ))}
         <View style={[styles.tableRow, {paddingBottom: 5}]}>
           <Text style={styles.tableCell}>Grand Total</Text>
           <Text style={styles.tableCell}></Text>
           <Text style={styles.tableCell}></Text>
-          <Text style={styles.tableCell}>${getTotalPrice()?.toFixed(2)}</Text>
+          <Text style={styles.tableCell}>${total}</Text>
         </View>
       </View>
 

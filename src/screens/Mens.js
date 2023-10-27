@@ -26,7 +26,7 @@ const Mens = ({navigation}) => {
   const getProducts= async()=>{
     setLoading(true);
     const res= await FetchData('products');
-    const data= await res?.filter((product)=>product?.category==="Men");
+    const data= await res?.filter((product)=>product?.category?.includes("Men"));
     setProducts(data);
     setLoading(false)
   };

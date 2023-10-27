@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -7,18 +8,21 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
-import {useFetch} from '../../utils/customHook';
-import {BASE_URL} from '@env';
-import {Colors} from '../../utils/Colors';
-import {Dimensions} from 'react-native';
-import {textStyle} from '../../utils/GlobalStyles';
-import {Button} from '@rneui/base';
+import { BASE_URL } from '@env';
+import { Colors } from '../../utils/Colors';
+import { Dimensions } from 'react-native';
+import { textStyle } from '../../utils/GlobalStyles';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
-const ProductCard = ({item, navigation}) => {
+const ProductCard = ({ item, navigation }) => {
+  const [imageIndex, setImageIndex] = useState(0);
+
+  const handleImageChange = (index) => {
+    setImageIndex(index);
+  };
+
   return (
     <TouchableOpacity
       key={item.id}
@@ -28,31 +32,39 @@ const ProductCard = ({item, navigation}) => {
           product: item._id,
           title: item.title,
         })
-      }>
-      {/* <FontAwesome
-        name="cart-plus"
-        size={20}
-        color={'white'}
-        style={{
-          position: 'absolute',
-          top: 10,
-          right: 10,
-          zIndex: 1,
-          padding: 5,
-          borderRadius: 20,
-          backgroundColor: Colors.input_background2,
-        }}
-      /> */}
-      <Image source={{uri: item?.image}} style={styles.cardImage} />
-      <Text style={[textStyle, {fontSize: 16, padding: 5}]}>
-        {item?.title.substring(0, 15)}
+      }
+    >
+      <View style={styles.imageSlider}>
+        {item.image.map((img, index) => (
+          <Image
+            key={index}
+            source={{ uri: img }}
+            style={[styles.cardImage, index !== imageIndex && styles.hidden]}
+          />
+        ))}
+      </View>
+      {/* <View style={styles.dotsContainer}>
+        {item.image.map((_, index) => (
+          <View
+            key={index}
+            style={[
+              styles.dot,
+              index === imageIndex && styles.activeDot,
+            ]}
+            onTouchEnd={() => handleImageChange(index)}
+          />
+        ))}
+      </View> */}
+      <Text style={[textStyle, { fontSize: 16, padding: 5 }]}>
+        {item.title.substring(0, 15)}
       </Text>
-      <View style={{flexDirection: 'row', gap: 5, alignItems: 'center'}}>
+      <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
         <Text
-          style={[textStyle, {padding: 5, textDecorationLine: 'line-through'}]}>
-          ${Number(item?.price) + 30}
+          style={[textStyle, { padding: 5, textDecorationLine: 'line-through'}]}
+        >
+          ${Number(item.price) + 30}
         </Text>
-        <Text style={[textStyle, {color: 'green'}]}>${item.price}</Text>
+        <Text style={[textStyle, { color: 'green'}]}>${item.price}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -75,11 +87,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     position: 'relative',
   },
-  card: {
-    width: '100%',
-    height: 200,
-    borderRadius: 10,
-    backgroundColor: 'lightblue',
+  imageSlider: {
     position: 'relative',
   },
   cardImage: {
@@ -87,6 +95,24 @@ const styles = StyleSheet.create({
     height: 100,
     resizeMode: 'contain',
     borderRadius: 10,
-    zIndex: -1,
+  },
+  dotsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 5,
+  },
+  dot: {
+    width: 5,
+    height: 5,
+    borderRadius: 5,
+    backgroundColor: 'lightgray',
+    margin: 5,
+  },
+  activeDot: {
+    backgroundColor: 'blue',
+  },
+  hidden: {
+    display: 'none',
   },
 });

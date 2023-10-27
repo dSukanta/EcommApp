@@ -29,7 +29,6 @@ export const removeFromStorage= async(name)=>{
 
 
 export const FetchData= async(endpoint="/",method="GET")=>{
-    
     try {
         const res= await fetch(`${BASE_URL}/${endpoint}`,{method:method});
         const data=await res.json();
@@ -64,7 +63,7 @@ export const restrictedRequest= async(endpoint="/",method="GET",token)=>{
     };
 
     const res= await fetch(`${BASE_URL}/${endpoint}`,options);
-    const data= res.json();
+    const data=await res.json();
     return data;
 };
 

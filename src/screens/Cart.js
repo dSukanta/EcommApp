@@ -1,4 +1,4 @@
-import React, {useState,useContext,useEffect, useCallback} from 'react';
+import React, {useState,useContext} from 'react';
 import {
   View,
   Text,
@@ -9,16 +9,16 @@ import {
 } from 'react-native';
 import {HeadingStyle, textStyle} from '../../utils/GlobalStyles';
 import { Colors } from '../../utils/Colors';
-import { restrictedRequest } from '../../utils/Functions';
 import { Appcontext } from '../../context/AppContext';
+import { restrictedRequest } from '../../utils/Functions';
 import Toast from 'react-native-toast-message';
-import { useFocusEffect } from '@react-navigation/native';
 
 
 const Cart = ({navigation}) => {
 
-  const {userData,userToken,cartItem,setCartItem}= useContext(Appcontext);
+  const {cartItem,setCartItem,userToken,userData}= useContext(Appcontext);
 
+  // console.log(cartItem,'cart')
 
   const [cartItems, setCartItems] = useState([
     {
@@ -38,128 +38,116 @@ const Cart = ({navigation}) => {
     // Add more items as needed
   ]);
 
-
-  const getCartItems= async()=>{
-
-    if(userToken){
-      const res= await restrictedRequest(`cart/mycart/${userToken}`,"GET",userToken);
-      if(res.status === 200){
-        // Toast.show({
-        //   type: 'success',
-        //   text1:res.message
-        // });
-        setCartItem(res?.data);
-        // console.log(res,'cart items')
-      }else{
-        Toast.show({
-          type: 'error',
-          text1:res.message
-        })
-      }
-    }else{
-      console.log('user not logged in')
-    }
-  };
-
-  useEffect(()=>{
-    getCartItems();
-    return(()=> console.log('user leaves'))
-  },[userToken]);
-
-  useFocusEffect(
-    useCallback(() => {
-      const unsubscribe = ()=> console.log('user unsubscribed');
-
-      return () => unsubscribe();
-    }, [])
-  );
-
-
   const getTotalPrice = () => {
     return cartItem.reduce(
-      (total, item) => total + item.product.price * item.quantity,
+      (total, item) => total + Number(item?.product?.price) * Number(item.quantity),
       0,
     );
   };
 
   const increaseQuantity = itemId => {
-    const updatedCartItem = cartItem.map(item =>
-      item.product._id === itemId ? {...item, quantity: item.quantity + 1} : item,
+    // console.log(cartItem,itemId,'data')
+    const updatedCartItems = cartItem?.map(item =>
+      item?._id === itemId ? {...item, quantity: (Number(item?.quantity)) + 1} : item,
     );
-    setCartItem(updatedCartItem);
+    console.log(updatedCartItems)
+    setCartItem(updatedCartItems);
   };
 
   const decreaseQuantity = itemId => {
-    const updatedCartItems = cartItems.map(item =>
-      item.id === itemId && item.quantity > 1
+    const updatedCartItems = cartItem?.map(item =>
+      item?._id === itemId && item?.quantity > 1
         ? {...item, quantity: item.quantity - 1}
         : item,
     );
-    setCartItems(updatedCartItems);
+    setCartItem(updatedCartItems);
   };
 
-  const removeItem = itemId => {
-    const updatedCartItems = cartItems.filter(item => item.id !== itemId);
-    setCartItems(updatedCartItems);
-  };
-
+  const removeItem = async(productid) => {
+    if(!productid){
+      return Toast.show({
+        type: 'error',
+        text1:'Product not available right now',
+      });
+    };
+    if(!userData || !userToken){
+      return Toast.show({
+        type: 'error',
+        text1:'You are unauthorized',
+      });
+    }
+     const res= await restrictedRequest(`cart/mycart/deleteitem/${userToken}/${productid}`,'DELETE',userToken);
+     if(res.error){
+       Toast.show({
+        type:'error',
+        text1: res?.message
+       })
+     }else{
+      Toast.show({
+        type:'success',
+        text1: res?.message
+       })
+        const getCartItem= await restrictedRequest(`cart/mycart/${userToken}`,'GET',userToken);
+        // console.log(res);
+        if(getCartItem.error){
+          Toast.show({
+            type:'error',
+            text1: getCartItem?.message
+           })
+        }else{
+          setCartItem(getCartItem?.data)
+        }
+     }
+  };  
   const handleCheckout=()=>{
-    navigation.navigate('Checkout',{product:cartItems});
+    navigation.navigate('Checkout',{product:cartItem, total: getTotalPrice()});
   }
 
   const renderItem = item => {
     return (
-      <View style={styles.cartItem} key={item?._id}>
-        <Image source={{uri:item?.product?.image}} style={styles.cartItemImage} />
+      <View style={styles.cartItem}>
+        <Image source={{uri:item?.product?.image[0]}} style={styles.cartItemImage} />
         <View style={styles.cartItemDetails}>
           <Text style={styles.cartItemTitle}>{item?.product?.title}</Text>
           <Text style={styles.cartItemPrice}>${item?.product?.price}</Text>
           <View style={styles.quantityContainer}>
             <TouchableOpacity
               style={styles.quantityBtn}
-              onPress={() => decreaseQuantity(item.product.id)}
+              onPress={() => decreaseQuantity(item?._id)}
               disabled={item?.quantity <= 1}>
               <Text style={[textStyle, {color: 'white', fontSize: 18}]}>-</Text>
             </TouchableOpacity>
-            <Text style={styles.quantityText}>{item?.quantity}</Text>
+            <Text style={styles.quantityText}>{item.quantity}</Text>
             <TouchableOpacity
               style={styles.quantityBtn}
-              onPress={() => increaseQuantity(item.product.id)}>
+              onPress={() => increaseQuantity(item?._id)}
+              >
               <Text style={[textStyle, {color: 'white', fontSize: 18}]}>+</Text>
             </TouchableOpacity>
           </View>
         </View>
         <TouchableOpacity
           style={styles.deleteBtn}
-          onPress={() => removeItem(item.product.id)}>
+          onPress={() => removeItem(item?._id)}>
           <Text>X</Text>
         </TouchableOpacity>
       </View>
     );
   };
 
-  if(!userData || !userToken){
-    return <View style={{flex:1,width:'90%',justifyContent:'center',alignItems:'center',alignSelf:'center'}}>
-      <Text>you are not logged in. Please login/signup to see your cart</Text>
-    </View>
-  };
-
-  // console.log(cartItem);
-
   return (
     <View style={styles.container}>
-  
-      {cartItem?.length > 0 ? (
+      {cartItem.length > 0 ? (
         <>
           <FlatList
             data={cartItem}
             renderItem={({item}) => renderItem(item)}
-            keyExtractor={({item,index}) => index}
+            keyExtractor={({item,index}) =>index}
             contentContainerStyle={styles.cartList}
           />
           <View style={styles.totalContainer}>
             <Text style={styles.totalText}>
-              Total: ${getTotalPrice()?.toFixed(2)}
+              Total: ${getTotalPrice()}
             </Text>
             <TouchableOpacity style={styles.checkoutButton} onPress={handleCheckout}>
               <Text style={[textStyle,{color:'#fff'}]}>Checkout</Text>
@@ -173,7 +161,6 @@ const Cart = ({navigation}) => {
            <Text style={[textStyle,{padding:5}]}>Looks like you haven't added anything to your cart. Go ahead and explore top Categories.</Text>
           </View>
       )}
-      <Toast/>
     </View>
   );
 };
